@@ -11,7 +11,7 @@ body {
   font-family: "Shantell Sans", cursive;
 }
 
-.todolist {
+.wrapper {
   padding: 20px;
   width: 45vw;
   background-color: pink;
@@ -33,7 +33,7 @@ body {
   justify-content: space-around;
 }
 
-.text__input {
+.todo__input {
   padding: 10px;
   width: 50vw;
   outline: none;
@@ -59,16 +59,15 @@ body {
   height: 100%;
 }
 
-li {
+.todo__item {
   padding: 0 10px 0 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
   height: 40px;
-  width: 40vw;
+  width: 80%;
   font-size: 20px;
-  text-align: left;
   background: white;
   border-radius: 5px;
   margin-top: 10px;
@@ -93,7 +92,26 @@ li {
   font-size: 16px;
 }
 
-.list button {
+.checkbox {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0.5rem 0.5rem;
+  border-radius: 50px;
+  border: 1px solid lightgray;
+  cursor: pointer;
+  text-align: center;
+}
+
+.todotext {
+  width: 80%;
+  text-align: left;
+}
+
+.todo__item.checked .checkbox {
+  color: green;
+}
+
+.delBtn {
   border: none;
   outline: none;
   cursor: pointer;

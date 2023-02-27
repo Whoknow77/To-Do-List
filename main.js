@@ -1,31 +1,85 @@
-const addButton = document.querySelector(".btn__add"); // 할 일 추가하기
-const todo = document.querySelector(".text__input"); // 할 일
-const todoList = document.querySelector(".list");
-const addTodo = () => {
-  if (!todo.value) {
-    todo.focus();
-    return;
-  }
-  let item = document.createElement("li");
-  let del = document.createElement("button");
-  let span = document.createElement("span");
-  del.innerText = "X";
-  del.addEventListener("click", deleteTodo); // 삭제 버튼 이벤트
-  item.appendChild(span);
-  span.innerText = todo.value;
-  item.appendChild(del);
-  item.addEventListener("click", () => {
-    span.classList.toggle("select");
+const todoInput = document.querySelector(".todo__input"); // todo 입력
+const todoList = document.querySelector(".todolist"); // todolist ul태그
+const addBtn = document.querySelector(".btn__add"); // 추가 버튼
+
+let todos = [];
+let id = 0;
+
+const init = () => {
+  todoInput.addEventListener("keypress", (e) => {
+    if (!e.target.value) return;
+    if (e.key === "Enter") {
+      appendTodos(e.target.value);
+      todoInput.value = "";
+    }
   });
 
-  todoList.appendChild(item);
-  todo.focus();
-  todo.value = "";
+  addBtn.addEventListener("click", () => {
+    if (!todoInput.value) return;
+    appendTodos(todoInput.value);
+    todoInput.value = "";
+  });
 };
 
-const deleteTodo = (e) => {
-  e.target.parentElement.remove();
+const setTodos = (newTodos) => {
+  todos = newTodos;
 };
-// <li> <checkbox> <text> <button> </li>
 
-addButton.addEventListener("click", addTodo);
+const getAllTodos = () => {
+  return todos;
+};
+
+const appendTodos = (text) => {
+  const newId = id++;
+  const newTodos = [
+    ...getAllTodos(),
+    { id: newId, isCompleted: false, content: text },
+  ]; // 기존 todo + 새로운 todo
+  setTodos(newTodos); // todo 업데이트
+  paintTodos(); // HTML에 그려주기
+};
+
+const deleteTodo = (todoId) => {
+  const newTodos = getAllTodos().filter((todo) => todo.id !== todoId);
+  setTodos(newTodos);
+  paintTodos();
+};
+
+const paintTodos = () => {
+  todoList.innerHTML = ""; // 초기화
+  const allTodos = getAllTodos(); // todo배열 가져오기
+
+  allTodos.forEach((todo) => {
+    // li
+    const todoItem = document.createElement("li");
+    todoItem.classList.add("todo__item");
+
+    // checkbox
+    const checkbox = document.createElement("div");
+    checkbox.classList.add("checkbox");
+
+    // text
+    const todotext = document.createElement("div");
+    todotext.classList.add("todotext");
+    todotext.innerText = todo.content;
+
+    // delete
+    const delBtn = document.createElement("button");
+    delBtn.classList.add("delBtn");
+    delBtn.addEventListener("click", () => deleteTodo(todo.id));
+    delBtn.innerText = "X";
+
+    if (todo.isCompleted) {
+      todoItem.classList.add("checked");
+      checkbox.innerText = "✔";
+    }
+
+    todoItem.appendChild(checkbox);
+    todoItem.appendChild(todotext);
+    todoItem.appendChild(delBtn);
+
+    todoList.appendChild(todoItem);
+  });
+};
+
+init();
