@@ -1,6 +1,5 @@
 const addButton = document.querySelector(".btn__add"); // 할 일 추가하기
 const todo = document.querySelector(".text__input"); // 할 일
-const deleteButton = document.querySelector(".btn__all__delete"); // 삭제
 const todoList = document.querySelector(".list");
 const addTodo = () => {
   if (!todo.value) {
@@ -9,14 +8,23 @@ const addTodo = () => {
   }
   let item = document.createElement("li");
   let del = document.createElement("button");
-  let check = document.createElement("input");
+  let span = document.createElement("span");
   del.innerText = "X";
-  item.appendChild(check);
-  item.innerText = todo.value;
+  del.addEventListener("click", deleteTodo); // 삭제 버튼 이벤트
+  item.appendChild(span);
+  span.innerText = todo.value;
   item.appendChild(del);
+  item.addEventListener("click", () => {
+    span.classList.toggle("select");
+  });
+
   todoList.appendChild(item);
   todo.focus();
   todo.value = "";
+};
+
+const deleteTodo = (e) => {
+  e.target.parentElement.remove();
 };
 // <li> <checkbox> <text> <button> </li>
 
