@@ -111,6 +111,11 @@ body {
   color: green;
 }
 
+.todo__item.checked .todotext {
+  text-decoration: line-through;
+  color: gray;
+}
+
 .delBtn {
   border: none;
   outline: none;

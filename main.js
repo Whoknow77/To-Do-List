@@ -45,6 +45,15 @@ const deleteTodo = (todoId) => {
   paintTodos();
 };
 
+const completeTodo = (todoId) => {
+  const newTodos = getAllTodos().map((todo) =>
+    todo.id === todoId ? { ...todo, isCompleted: !todo.isCompleted } : todo
+  ); // 같으면 toggle해서, 다르면 그대로 반환
+
+  // setTodos(newTodos);
+  paintTodos();
+};
+
 const paintTodos = () => {
   todoList.innerHTML = ""; // 초기화
   const allTodos = getAllTodos(); // todo배열 가져오기
@@ -57,6 +66,7 @@ const paintTodos = () => {
     // checkbox
     const checkbox = document.createElement("div");
     checkbox.classList.add("checkbox");
+    checkbox.addEventListener("click", () => completeTodo(todo.id));
 
     // text
     const todotext = document.createElement("div");
