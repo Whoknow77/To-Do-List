@@ -60,17 +60,17 @@ body {
 }
 
 .todo__item {
-  padding: 0 10px 0 10px;
+  padding: 5px 10px 5px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  height: 40px;
   width: 80%;
   font-size: 20px;
   background: white;
   border-radius: 5px;
   margin-top: 10px;
+  position: relative;
 }
 
 .all {
@@ -103,6 +103,7 @@ body {
 }
 
 .todotext {
+  overflow: hidden;
   width: 80%;
   text-align: left;
 }
@@ -116,10 +117,22 @@ body {
   color: gray;
 }
 
-.delBtn {
+.delBtn,
+.editBtn {
   border: none;
   outline: none;
   cursor: pointer;
   background: none;
   font-size: 18px;
+  margin-left: 5px;
+}
+
+.edit__input {
+  border: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  padding-left: 10px;
 }

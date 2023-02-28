@@ -1,6 +1,8 @@
 const todoInput = document.querySelector(".todo__input"); // todo 입력
 const todoList = document.querySelector(".todolist"); // todolist ul태그
 const addBtn = document.querySelector(".btn__add"); // 추가 버튼
+const allSelectBtn = document.querySelector(".btn__all__select");
+const allDeleteBtn = document.querySelector(".btn__all__delete");
 
 let todos = [];
 let id = 0;
@@ -18,6 +20,17 @@ const init = () => {
     if (!todoInput.value) return;
     appendTodos(todoInput.value);
     todoInput.value = "";
+  });
+
+  allDeleteBtn.addEventListener("click", () => {
+    getAllTodos().splice(0);
+    paintTodos();
+  });
+
+  allSelectBtn.addEventListener("click", () => {
+    getAllTodos().forEach((todo) => {
+      completeTodo(todo.id);
+    });
   });
 };
 
@@ -49,8 +62,45 @@ const completeTodo = (todoId) => {
   const newTodos = getAllTodos().map((todo) =>
     todo.id === todoId ? { ...todo, isCompleted: !todo.isCompleted } : todo
   ); // 같으면 toggle해서, 다르면 그대로 반환
+  // spread 를 통해 객체의 데이터를 가져옴
 
-  // setTodos(newTodos);
+  setTodos(newTodos);
+  paintTodos();
+};
+
+const editTodo = (e, todoId) => {
+  const oldtodoItem = getAllTodos().filter((todo) => todo.id === todoId);
+  const todoItem = e.target.parentNode; // li 태그
+  const todotext = document.createElement("input");
+  todotext.value = oldtodoItem[0].content;
+  todotext.classList.add("edit__input");
+
+  todotext.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      updateTodo(e.target.value, todoId); // todo 수정
+      document.body.removeEventListener("click", onClickBody);
+    }
+  });
+
+  const onClickBody = (e) => {
+    if (e.target.parentNode !== todoItem) {
+      todoItem.removeChild(todotext);
+      document.body.removeEventListener("click", onClickBody);
+    }
+  };
+
+  // todoItemElem 요소를 제외한 영역을 클릭 시, 수정모드 종료
+  document.body.addEventListener("click", onClickBody);
+
+  todoItem.appendChild(todotext);
+  todotext.focus();
+};
+
+const updateTodo = (text, todoId) => {
+  const newTodos = getAllTodos().map((todo) =>
+    todo.id === todoId ? { ...todo, content: text } : todo
+  );
+  setTodos(newTodos);
   paintTodos();
 };
 
@@ -79,6 +129,12 @@ const paintTodos = () => {
     delBtn.addEventListener("click", () => deleteTodo(todo.id));
     delBtn.innerText = "X";
 
+    // edit
+    const editBtn = document.createElement("button");
+    editBtn.classList.add("editBtn");
+    editBtn.addEventListener("click", (e) => editTodo(e, todo.id));
+    editBtn.innerText = "Edit";
+
     if (todo.isCompleted) {
       todoItem.classList.add("checked");
       checkbox.innerText = "✔";
@@ -86,6 +142,7 @@ const paintTodos = () => {
 
     todoItem.appendChild(checkbox);
     todoItem.appendChild(todotext);
+    todoItem.appendChild(editBtn);
     todoItem.appendChild(delBtn);
 
     todoList.appendChild(todoItem);
