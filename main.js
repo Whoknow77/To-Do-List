@@ -8,6 +8,7 @@ let todos = [];
 let id = 0;
 
 const init = () => {
+  paintTodos();
   todoInput.addEventListener("keypress", (e) => {
     if (!e.target.value) return;
     if (e.key === "Enter") {
@@ -23,7 +24,7 @@ const init = () => {
   });
 
   allDeleteBtn.addEventListener("click", () => {
-    getAllTodos().splice(0);
+    localStorage.clear();
     paintTodos();
   });
 
@@ -35,20 +36,23 @@ const init = () => {
 };
 
 const setTodos = (newTodos) => {
-  todos = newTodos;
+  // 로컬 업데이트
+  localStorage.setItem("todolist", JSON.stringify(newTodos));
 };
 
+// 로컬로 부터 받아오기
 const getAllTodos = () => {
-  return todos;
+  return localStorage.getItem("todolist")
+    ? JSON.parse(localStorage.getItem("todolist"))
+    : [];
 };
 
 const appendTodos = (text) => {
+  const oldtodos = getAllTodos();
   const newId = id++;
-  const newTodos = [
-    ...getAllTodos(),
-    { id: newId, isCompleted: false, content: text },
-  ]; // 기존 todo + 새로운 todo
-  setTodos(newTodos); // todo 업데이트
+  const newTodos = { id: newId, isCompleted: false, content: text };
+  oldtodos.push(newTodos);
+  setTodos(oldtodos); // todo 업데이트
   paintTodos(); // HTML에 그려주기
 };
 
