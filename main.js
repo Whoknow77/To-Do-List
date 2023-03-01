@@ -100,6 +100,8 @@ const editTodo = (e, todoId) => {
   // todoItemElem 요소를 제외한 영역을 클릭 시, 수정모드 종료
   const onClickBody = (e) => {
     if (e.target.parentNode !== todoItem) {
+      console.log("다른곳누름");
+      console.log(e.target.parentNode);
       todoItem.removeChild(todotext);
       document.body.removeEventListener("click", onClickBody);
     }
