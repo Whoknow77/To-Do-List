@@ -105,6 +105,7 @@ button {
 
 .delBtn,
 .editBtn {
+  background: none;
   cursor: pointer;
   font-size: 18px;
   margin-left: 5px;

@@ -4,9 +4,6 @@ const addBtn = document.querySelector(".btn__add"); // 추가 버튼
 const allSelectBtn = document.querySelector(".btn__all__select"); // 전체 선택
 const allDeleteBtn = document.querySelector(".btn__all__delete"); // 전체 삭제
 
-let todos = [];
-let id = 0;
-
 const init = () => {
   paintTodos();
 
@@ -57,8 +54,8 @@ const getAllTodos = () => {
 // 할 일 추가
 const appendTodos = (text) => {
   const currenttodos = getAllTodos();
-  const newId = id++;
-  const newTodos = { id: newId, isSelected: false, content: text };
+  let id = currenttodos.length;
+  const newTodos = { id: id, isSelected: false, content: text };
   currenttodos.push(newTodos);
   setTodos(currenttodos); // todo 업데이트
   paintTodos();
