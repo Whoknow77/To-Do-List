@@ -129,7 +129,6 @@ const appendTodos = (text) => {
 
 전역에 있는 `id`변수를 우선 제거하고, 할일을 추가할때마다 id 값을 로컬스토리지의 객체의 개수를 받아와 문제를 해결 하였다.
 
-<img src="https://i.postimg.cc/hGx5Cv0r/image.png">
 
 ## 느낀점
 
