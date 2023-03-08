@@ -56,8 +56,7 @@ const appendTodos = (text) => {
   const currenttodos = getAllTodos();
   let id = currenttodos.length;
   const newTodos = { id: id, isSelected: false, content: text };
-  currenttodos.push(newTodos);
-  setTodos(currenttodos); // todo 업데이트
+  setTodos([...currenttodos, newTodos]); // todo 업데이트
   paintTodos();
 };
 
